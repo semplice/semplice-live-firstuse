@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Name=Semplice Live Firstuse
+Comment=Sempice Live Firstuse
+Exec=sudo /usr/share/semplice-live-firstuse/semplice-live-firstuse.py
+X-Vera-Autostart-Phase=Initialization
+X-Vera-Launch-Sync=true
