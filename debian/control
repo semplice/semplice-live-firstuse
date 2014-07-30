@@ -1,0 +1,18 @@
+Source: semplice-live-firstuse
+Section: utils
+Priority: optional
+Maintainer: Eugenio Paolantonio (g7) <me@medesimo.eu>
+Build-Depends: python (>= 2.6.6-3), python-all, debhelper (>= 8.0.0)
+X-Python-Version: >= 2.6
+Standards-Version: 3.9.5
+Homepage: http://github.com/semplice/semplice-live-firstuse
+Vcs-Git: git://github.com/semplice/semplice-live-firstuse.git
+Vcs-Browser: https://github.com/semplice/semplice-live-firstuse
+
+Package: semplice-live-firstuse
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-quickstart, python-gi,
+ gir1.2-gtk-3.0, python-keeptalking
+Description: Language selector for Semplice Live.
+ semplice-live-firstuse is a simple language selector
+ for Semplice Live.
