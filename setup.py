@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # semplice-live-firstuse - First use tool for Semplice Live
@@ -24,7 +24,7 @@ from distutils.core import setup
 
 setup(
 	name='semplice-live-firstuse',
-	version='0.20',
+	version='0.21',
 	description='First use tool for Semplice Live',
 	author='Eugenio Paolantonio',
 	author_email='me@medesimo.eu',

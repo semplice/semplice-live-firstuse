@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # semplice-live-firstuse - First use tool for Semplice Live
@@ -22,10 +22,12 @@
 
 import os, sys
 
-from keeptalking.Locale import Locale
-from keeptalking.Keyboard import Keyboard
-from keeptalking.TimeZone import TimeZone
-from keeptalking.Live import Live
+import subprocess
+
+from keeptalking2.Locale import Locale
+from keeptalking2.Keyboard import Keyboard
+from keeptalking2.TimeZone import TimeZone
+from keeptalking2.Live import Live
 
 from gi.repository import Gtk, GObject, Pango
 import quickstart
@@ -62,7 +64,23 @@ class UI:
 		"clicked" : ("go_ahead",),
 		"toggled" : ("show_all",),
 	}
-	
+
+	def setxkbmap(self):
+		"""
+		Invokes setxkbmap and sets the currently selected layout, variant
+		and model.
+		"""
+		
+		subprocess.call(
+			[
+				"setxkbmap",
+				keyboard.default_layout,
+				keyboard.default_variant if keyboard.default_variant else "",
+				"-model" if keyboard.default_model else "",
+				keyboard.default_model if keyboard.default_model else ""
+			]
+		)
+
 	def get_selected_locale(self):
 		"""
 		Returns the currently selected locale.
@@ -98,19 +116,6 @@ class UI:
 		
 		return (lay, var, tzone)
 	
-	def is_keyboard_supported(self, layout):
-		"""
-		As keeptalking's keyboard.is_supported() tracebacks (FIXME!),
-		this is to be taken as a workaround.
-		"""
-		
-		for set_ in keyboard.supported():
-			for typ, lst in set_.items():
-				if layout in lst:
-					return True
-		
-		return False
-	
 	@quickstart.threads.thread
 	def apply(self, locale, layout, variant, tzone):
 		"""
@@ -124,13 +129,14 @@ class UI:
 		# Layout
 		print("Keyboard layout: %s" % layout)
 		print("Keyboard variant %s" % variant)
-		# FIXME: keeptalking's keyboard.is_supported() doesn't work
 				
-		if self.is_keyboard_supported(layout):
+		if keyboard.is_supported(layout):
 			if not variant in keyboard.supported_variants(layout):
 				variant = None
 			
 			keyboard.set(layout=layout, model=None, variant=variant)
+			
+			self.setxkbmap()
 		
 		# Timezone
 		print("Timezone: %s" % tzone)
@@ -244,11 +250,5 @@ if __name__ == "__main__":
 		if not live.skip_live:
 			quickstart.common.quickstart(UI)
 			
-			live.set()
-			
-			# Ugly hack to restart lightdm, we should remove it when 
-			# keeptalking transitions to python3 and systemd
-			subprocess.call("screen -A -m -d -S gdm3 nice /usr/share/keeptalking/restartgdm lightdm", shell=True)
 		
-		else:
-			live.set()
+		live.set()
