@@ -1,3 +1,9 @@
+semplice-live-firstuse (0.23) unstable; urgency=medium
+
+  * Set the live mode before restarting the display manager.
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Sun, 23 Nov 2014 18:25:32 +0100
+
 semplice-live-firstuse (0.22) unstable; urgency=medium
 
   * Restart the display manager after applying the changes.
