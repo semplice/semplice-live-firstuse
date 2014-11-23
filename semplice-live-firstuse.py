@@ -122,6 +122,9 @@ class UI:
 		Applies the settings.
 		"""
 		
+		# Live set
+		live.set()
+		
 		# Locale
 		print("Locale: %s" % locale)
 		loc.set(locale)
