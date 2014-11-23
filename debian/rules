@@ -12,6 +12,9 @@
 %:
 	dh $@ --with python3 --buildsystem=pybuild
 
+override_dh_python3:
+	dh_python3 --no-guessing-deps
+
 override_dh_auto_install:
 	python3 setup.py install --root=debian/semplice-live-firstuse --install-layout=deb --install-scripts=/usr/share/semplice-live-firstuse --install-lib=/usr/share/semplice-live-firstuse
 
