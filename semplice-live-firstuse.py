@@ -53,6 +53,22 @@ else:
 # for now, this chdir call will do the job.
 os.chdir(MAINDIR)
 
+def setxkbmap():
+	"""
+	Invokes setxkbmap and sets the currently selected layout, variant
+	and model.
+	"""
+	
+	subprocess.call(
+		[
+			"setxkbmap",
+			keyboard.default_layout,
+			keyboard.default_variant if keyboard.default_variant else "",
+			"-model" if keyboard.default_model else "",
+			keyboard.default_model if keyboard.default_model else ""
+		]
+	)
+
 @quickstart.builder.from_file("./firstuse.ui")
 class UI:
 	"""
@@ -64,22 +80,6 @@ class UI:
 		"clicked" : ("go_ahead",),
 		"toggled" : ("show_all",),
 	}
-
-	def setxkbmap(self):
-		"""
-		Invokes setxkbmap and sets the currently selected layout, variant
-		and model.
-		"""
-		
-		subprocess.call(
-			[
-				"setxkbmap",
-				keyboard.default_layout,
-				keyboard.default_variant if keyboard.default_variant else "",
-				"-model" if keyboard.default_model else "",
-				keyboard.default_model if keyboard.default_model else ""
-			]
-		)
 
 	def get_selected_locale(self):
 		"""
@@ -135,12 +135,13 @@ class UI:
 				variant = None
 			
 			keyboard.set(layout=layout, model=None, variant=variant)
-			
-			self.setxkbmap()
-		
+					
 		# Timezone
 		print("Timezone: %s" % tzone)
 		timezone.set(tzone)
+		
+		# Restart login manager
+		subprocess.call(["systemctl", "restart", "lightdm"])
 		
 		# Exit
 		Gtk.main_quit();
@@ -252,3 +253,9 @@ if __name__ == "__main__":
 			
 		
 		live.set()
+	else:
+		# Forcibily set the keyboard layout that have been previously set by this very
+		# same application.
+		# Unfortunately even after restarting lightdm the new keyboard layout is not
+		# picked up, so we need to workaround with setxkbmap.
+		setxkbmap()

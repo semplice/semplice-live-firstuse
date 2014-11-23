@@ -24,7 +24,7 @@ from distutils.core import setup
 
 setup(
 	name='semplice-live-firstuse',
-	version='0.21',
+	version='0.22',
 	description='First use tool for Semplice Live',
 	author='Eugenio Paolantonio',
 	author_email='me@medesimo.eu',
